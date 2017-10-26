@@ -1,6 +1,5 @@
 exports = module.exports = {};
 function getPublicAPI(baseURI){
-    //var baseURI = 'https://jsonplaceholder.typicode.com';
     var getJsonApi = function(callback){
         $.ajax({
              url: baseURI + '/users',
@@ -10,7 +9,7 @@ function getPublicAPI(baseURI){
                 callback(data);
             },
              error: function(error){
-                console.error(JSON.stringify(error))
+                callback(error);
             }
         });
     };
