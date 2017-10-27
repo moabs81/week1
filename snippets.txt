@@ -1,0 +1,25 @@
+{
+                test: /\.(eot|svg|ttf|woff|woff2)$/,
+                loaders: 'file-loader'
+            },
+{
+                test: /\.css$/,
+                loaders: 'style-loader!css-loader'
+            },
+            {
+            test: /\.less$/,
+            loaders: 'less'
+        }
+
+
+        function dataResult(result) {
+    var menu = returnMenu(result);
+    var htmlBlock = menu.renderMenu();
+    $('#contentArea').append('<div class="tableContainer" id="resultList"></div>');
+    htmlBlock.forEach(function(eachThing) {
+        $('#resultList').append(eachThing);
+    });
+    $('#resultList').after('<div class="tableButton" id="tableButton"></div>');
+};
+window.focus();
+dataStructure.jsonPlaceHolder(dataResult);

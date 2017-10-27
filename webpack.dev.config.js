@@ -5,11 +5,11 @@ var htmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
     devtool: 'cheap-eval-source-map',
     entry: './index.js',
-    output:{
-        path: path.join(__dirname,'dist'),
+    output: {
+        path: path.join(__dirname, 'dist'),
         filename: 'devBundle.js'
     },
-    plugins:[
+    plugins: [
         new htmlWebpackPlugin({
             template: './src/index.html'
         }),
@@ -20,11 +20,22 @@ module.exports = {
             '$': 'jQuery'
         })
     ],
-    module:{
-        loaders:[{
-            test: /\.css$/,
-            loaders: 'style-loader!css-loader'
-        }]
+    module: {
+        rules: [{
+            test: /\.less$/,
+            use: [{
+                loader: 'style-loader'
+            }, {
+                loader: 'css-loader'
+            }, {
+                loader: 'less-loader',
+                options: {
+                    strictMath: true,
+                    noIeCompat: true
+                }
+            }]
+        }],
+        loaders: []
     },
     devServer: {
 

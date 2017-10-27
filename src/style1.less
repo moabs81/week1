@@ -1,0 +1,52 @@
+/*--Vars and Rules--*/
+@bodyTextColor : #EC7600;
+@backgroundColor: #293134;
+#tableBorder(){
+    border: 1px solid;
+    border-spacing: 5px;
+}
+/*--attributes--*/
+a{
+    color: @bodyTextColor;
+    text-decoration:none;
+}
+p {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: @bodyTextColor;
+}
+/*--Classes--*/
+.tableContainer {
+    background-color: @backgroundColor;    
+    display: table;
+    width: auto;
+    #tableBorder;
+    .tableHeaderRow{
+        display: table-row;
+        .tableHeaderCell{            
+            color: #678CB1 !important; 
+            font-weight: bold;            
+        }        
+    }     
+    .tableRow{
+        display: table-row;        
+        .tableCell{
+            color: @bodyTextColor;            
+            font-family: 'Segoe UI';
+            float: left;
+            display: table-column;
+            width: 250px;            
+        }
+    }
+}
+/*--IDs--*/
+#titleBar {    
+    position: fixed;
+    width: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #93C763;
+    background-color: @backgroundColor;
+}
+#contentArea{        
+    width: 100%;    
+    padding-top: 90px;
+}

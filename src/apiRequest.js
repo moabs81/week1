@@ -1,20 +1,25 @@
+'use strict';
 exports = module.exports = {};
-function getPublicAPI(baseURI){
-    var getJsonApi = function(callback){
+
+function getPublicAPI(baseURI, endpoint) {
+    var targetUri = baseURI + endpoint;
+    var getJsonApi = function(callback) {
         $.ajax({
-             url: baseURI + '/users',
-             method: 'GET',
-             success: function(data){
-                data.theOtherThing = 'The monkey is in it, baby!';
+            url: targetUri,
+            method: 'GET',
+            success: function(data) {
+                for (var i = 0; i < data.length; i++) {
+                    data[i].menuOption = 'Option ' + data[i].id;
+                };
                 callback(data);
             },
-             error: function(error){
+            error: function(error) {
                 callback(error);
             }
         });
     };
     var publicAPI = {
-        jsonPlaceHolder : getJsonApi
+        jsonPlaceHolder: getJsonApi
     };
     return publicAPI;
 };

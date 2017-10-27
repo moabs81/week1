@@ -1,34 +1,22 @@
-var apiRequest = require('./apiRequest.js');
-var dataStructure = apiRequest.getPublicAPI('https://jsonplaceholder.typicode.com');
+'use strict';
+exports = module.exports = {};
 
-function returnMenu(data){
-    var renderMenu = function(){
+function returnMenu() {
+    var renderMenu = function(data) {
         var htmlBlock = [];
-        if (data.readyState == 0){
+        if (data.readyState == 0) {
             console.log('ERROR IN MENU');
-            htmlBlock.push('<li>I\'m sorry, there was an error.</li>');            
-        } else{
-            for (var i=0; i<data.length; i++){
-                console.log(data[i]);
-                console.log('success in menu!');
-                htmlBlock.push('<li>' + data[i].username + ' - located at these coordinates: ' + data[i].address.geo.lat + ',' + data[i].address.geo.lng + '</li>');
+            htmlBlock.push('<div>I\'m sorry, there was an error.</div>');
+        } else {
+            for (var i = 0; i < data.length; i++) {
+                htmlBlock.push('<div class = "tableRow" id = "' + data[i].id + '"><div class="userName tableCell"><a href="#">' + data[i].username + '</a></div><div class="latitude tableCell">' + data[i].address.geo.lat + '</div><div class="longitude tableCell">' + data[i].address.geo.lng + '</div></div>');
             };
         };
         return htmlBlock;
     };
     var publicAPI = {
-        renderMenu : renderMenu
+        renderMenu: renderMenu
     };
     return publicAPI;
 }
-
-function dataResult(result){   
-    var menu = returnMenu(result);
-    var htmlBlock = menu.renderMenu();
-    $('h1').after('<ul id="resultList"></ul>');
-    htmlBlock.forEach(function(eachThing){
-        $('#resultList').append(eachThing);
-    });
-};
-window.focus();
-dataStructure.jsonPlaceHolder(dataResult);
+exports.returnMenu = returnMenu;
