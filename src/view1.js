@@ -21,7 +21,12 @@ function initMap() {
 }
 window.initMap = initMap;
 var setView = function (data) { //This is the callback function that take the data and puts it in the view
-    data.theOtherThing = 'The monkey is in it, baby!';
+    if (data.readyState == 0) {
+        data.theOtherThing = 'Sorry, you appear to be offline. Using data from dataSet1.js import. This is very hack and slash, but you didn\'t get Postman up in time.';
+    } else {
+        data.theOtherThing = 'The monkey is in it, baby!';
+    };
+
     getTableRows = returnTable.returnMenu();
     var htmlBlock = getTableRows.renderMenu(data);
     $('#tableArea').append('<p id="subTitle">' + data.theOtherThing + '</p>');
@@ -47,7 +52,12 @@ var setView = function (data) { //This is the callback function that take the da
             coordinates.lat = parseFloat(e.path[2].children[1].innerText);
             coordinates.lng = parseFloat(e.path[2].children[2].innerText);
             console.log(coordinates);
-            $('#map').after('<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCDGOp3S8vVHFRzEuEMRI0oGzNnaebmc5A&callback=initMap" async defer></script>');
+            if (data.readyState == 0) {
+                $('#map').replaceWith('<p>No map for you. Enjoy this gibberish instead.</p><p>' + coordinates.lat + '</p><p>' + htmlBlock + '</p>');
+            } else {
+                $('#map').after('<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCDGOp3S8vVHFRzEuEMRI0oGzNnaebmc5A&callback=initMap" async defer></script>');
+            }
+
         });
     }
 };
