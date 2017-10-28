@@ -3,28 +3,52 @@ var apiRequest = require('./apiRequest.js');
 var returnTable = require('./menu1.js');
 var view1 = apiRequest.getPublicAPI('https://jsonplaceholder.typicode.com', '/users');
 var getTableRows; //module global for tableRows object
-var setView = function(data) { //This is the callback function that take the data and puts it in the view
+var coordinates = {}; //module global for coordinates
+var googApiKey = "AIzaSyCDGOp3S8vVHFRzEuEMRI0oGzNnaebmc5A";
+var googSrc = 'https://maps.googleapis.com/maps/api/js?key=' + googApiKey + '&callback=initMap async defer';
+console.log(googSrc);
+var map;
+
+function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 4,
+        center: coordinates
+    });
+    marker = new google.maps.Marker({
+        position: coordinates,
+        map: map
+    });
+}
+window.initMap = initMap;
+var setView = function (data) { //This is the callback function that take the data and puts it in the view
     data.theOtherThing = 'The monkey is in it, baby!';
     getTableRows = returnTable.returnMenu();
     var htmlBlock = getTableRows.renderMenu(data);
-    $('#contentArea').append('<p id="subTitle">' + data.theOtherThing + '</p>');
-    $('#contentArea').append('<div class="tableContainer" id="resultList"></div>');
+    $('#tableArea').append('<p id="subTitle">' + data.theOtherThing + '</p>');
+    $('#tableArea').append('<div class="tableContainer" id="resultList"></div>');
     $('#resultList').append('<div class="tableRow tableHeaderRow" id="headerRow"><div class="userNameHeader tableCell tableHeaderCell">User Name</div><div class="latitudeHeader tableCell tableHeaderCell">Latitude</div><div class="longitudeHeader tableCell tableHeaderCell">Longitude</div></div></div>')
-    htmlBlock.forEach(function(eachThing) {
+    htmlBlock.forEach(function (eachThing) {
         $('#resultList').append(eachThing);
     });
-    $('#resultList').after('<div class="tableButton" id="tableButton"></div>');
-    for (var i = 0; i < 3; i++) {
-        console.log(data[i].menuOption);
-    };
-    //set scrolling
-    /*window.onscroll = function() { //addEventListener('scroll', function() {        
-        console.log(document.getElementById('subTitle').offsetTop - window.scrollTop);
-        console.log(document.getElementById('resultList').offsetTop - document.body.scrollTop);
 
-        if (document.getElementById('subTitle').scrollTop < 30) {
-            console.log('we are over it');
+    //set scrolling
+    window.onscroll = function () {
+        var viewPort = document.getElementById('subTitle').getBoundingClientRect();
+        if (viewPort.top < 95) {
+            $('.titleBar').addClass('titleBarSolid');
+        } else {
+            $('.titleBar').removeClass('titleBarSolid');
         }
-    };*/
+    };
+    for (var i = 1; i < 11; i++) {
+        var el = document.getElementById(i);
+        el.addEventListener('click', function (e) {
+            coordinates = {};
+            coordinates.lat = parseFloat(e.path[2].children[1].innerText);
+            coordinates.lng = parseFloat(e.path[2].children[2].innerText);
+            console.log(coordinates);
+            $('#map').after('<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCDGOp3S8vVHFRzEuEMRI0oGzNnaebmc5A&callback=initMap" async defer></script>');
+        });
+    }
 };
 view1.jsonPlaceHolder(setView);
