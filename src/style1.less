@@ -2,6 +2,7 @@
 
 @bodyTextColor : #EC7600;
 @backgroundColor: #293134;
+@highlightColor: #93C763;
 #tableBorder() {
     border: 1px solid;
     border-spacing: 5px;
@@ -43,11 +44,20 @@ p {
     .tableRow {
         display: table-row;
         .tableCell {
+            #tableBorder;
             color: @bodyTextColor;
+            text-align: center;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             float: left;
             display: table-column;
             width: 250px;
+        }
+    }
+    .tableRow:hover {
+        font-weight: bold;
+        color: @highlightColor;
+        .tableCell {
+            color: @highlightColor;
         }
     }
 }
@@ -62,7 +72,7 @@ p {
 }
 
 .titleBarSolid {
-    color: #93C763;
+    color: @highlightColor;
     background-color: @backgroundColor !important;
 }
 

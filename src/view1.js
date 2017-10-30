@@ -5,8 +5,7 @@ var view1 = apiRequest.getPublicAPI('https://jsonplaceholder.typicode.com', '/us
 var getTableRows; //module global for tableRows object
 var coordinates = {}; //module global for coordinates
 var googApiKey = "AIzaSyCDGOp3S8vVHFRzEuEMRI0oGzNnaebmc5A";
-var googSrc = 'https://maps.googleapis.com/maps/api/js?key=' + googApiKey + '&callback=initMap async defer';
-console.log(googSrc);
+var setCoordinates = returnTable.getCoordinates();
 var map;
 
 function initMap() {
@@ -20,13 +19,18 @@ function initMap() {
     });
 }
 window.initMap = initMap;
-var setView = function (data) { //This is the callback function that take the data and puts it in the view
+
+var setView = function (data, backupData) { //This is the callback function that take the data and puts it in the view
+
     if (data.readyState == 0) {
+        data = backupData;
+        data.readyState = 0;
         data.theOtherThing = 'Sorry, you appear to be offline. Using data from dataSet1.js import. This is very hack and slash, but you didn\'t get Postman up in time.';
+
     } else {
         data.theOtherThing = 'The monkey is in it, baby!';
     };
-
+    console.log(data);
     getTableRows = returnTable.returnMenu();
     var htmlBlock = getTableRows.renderMenu(data);
     $('#tableArea').append('<p id="subTitle">' + data.theOtherThing + '</p>');
@@ -45,13 +49,12 @@ var setView = function (data) { //This is the callback function that take the da
             $('.titleBar').removeClass('titleBarSolid');
         }
     };
+    //set event listeners on <a> elements and grab coordinates from clicks
     for (var i = 1; i < 11; i++) {
         var el = document.getElementById(i);
         el.addEventListener('click', function (e) {
             coordinates = {};
-            coordinates.lat = parseFloat(e.path[2].children[1].innerText);
-            coordinates.lng = parseFloat(e.path[2].children[2].innerText);
-            console.log(coordinates);
+            coordinates = setCoordinates.setCoordinatesObject(e);
             if (data.readyState == 0) {
                 $('#map').replaceWith('<p>No map for you. Enjoy this gibberish instead.</p><p>' + coordinates.lat + '</p><p>' + htmlBlock + '</p>');
             } else {
@@ -59,6 +62,6 @@ var setView = function (data) { //This is the callback function that take the da
             }
 
         });
-    }
+    };
 };
 view1.jsonPlaceHolder(setView);
